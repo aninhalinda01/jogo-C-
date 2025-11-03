@@ -1,0 +1,266 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib> // Para std::srand, std::rand
+#include <ctime>   // Para std::time
+
+using namespace std;
+
+// --- Funções Auxiliares ---
+
+// 1. Desenha o estágio atual da forca e o status do jogo.
+void desenha_forca(int erros, const string& palavra_adivinhada, const string& letras_tentadas) {
+    // Desenho ASCII da forca (simplificado)
+    cout << "\n";
+    cout << "  +---+\n";
+    cout << "  |   |\n";
+    cout << "  " << (erros >= 1 ? "O" : " ") << "   |\n";
+    cout << " " << (erros >= 3 ? "/" : " ") << (erros >= 2 ? "|" : " ") << (erros >= 4 ? "\\" : " ") << "  |\n";
+    cout << " " << (erros >= 5 ? "/" : " ") << " " << (erros >= 6 ? "\\" : " ") << "  |\n";
+    cout << "      |\n";
+    cout << "=========\n";
+    
+    // Status do jogo
+    cout << "Palavra: " << palavra_adivinhada << endl;
+    cout << "Tentativas Restantes: " << (6 - erros) << endl;
+    cout << "Letras Tentadas: " << letras_tentadas << endl;
+    cout << "-----------------------\n";
+}
+
+// 2. Processa a tentativa do jogador (uma letra)
+bool tentar_letra(char tentativa, string& palavra_oculta, string& palavra_adivinhada, int& erros) {
+    bool acertou = false;
+    bool letra_ja_tentada = false;
+
+    // Converte a tentativa para maiúscula (para padronização)
+    tentativa = toupper(tentativa);
+
+    // Verifica se a letra já foi tentada
+    // (A variável 'letras_tentadas' é controlada na função 'main')
+
+    // Verifica se a letra está na palavra
+    for (size_t i = 0; i < palavra_oculta.length(); ++i) {
+        if (toupper(palavra_oculta[i]) == tentativa) {
+            // Se a letra já foi revelada, não conta como acerto novo.
+            if (palavra_adivinhada[i] != '_') {
+                letra_ja_tentada = true;
+                break; 
+            }
+            palavra_adivinhada[i] = tentativa;
+            acertou = true;
+        }
+    }
+
+    if (!acertou && !letra_ja_tentada) {
+        erros++;
+        return false; // Erro!
+    } else if (letra_ja_tentada) {
+        cout << "Essa letra já foi revelada ou você já a tentou.\n";
+        return true; // Não é erro, mas também não é um novo acerto.
+    }
+    
+    return true; // Acertou!
+}
+
+
+// --- Função Principal do Jogo ---
+
+int main() {
+    // Inicializa a semente para a função rand()
+    srand(time(0)); #include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib> // Para std::srand, std::rand
+#include <ctime>   // Para std::time
+
+using namespace std;
+
+// --- Funções Auxiliares ---
+
+// 1. Desenha o estágio atual da forca e o status do jogo.
+void desenha_forca(int erros, const string& palavra_adivinhada, const string& letras_tentadas) {
+    // Desenho ASCII da forca (simplificado)
+    cout << "\n";
+    cout << "  +---+\n";
+    cout << "  |   |\n";
+    cout << "  " << (erros >= 1 ? "O" : " ") << "   |\n";
+    cout << " " << (erros >= 3 ? "/" : " ") << (erros >= 2 ? "|" : " ") << (erros >= 4 ? "\\" : " ") << "  |\n";
+    cout << " " << (erros >= 5 ? "/" : " ") << " " << (erros >= 6 ? "\\" : " ") << "  |\n";
+    cout << "      |\n";
+    cout << "=========\n";
+    
+    // Status do jogo
+    cout << "Palavra: " << palavra_adivinhada << endl;
+    cout << "Tentativas Restantes: " << (6 - erros) << endl;
+    cout << "Letras Tentadas: " << letras_tentadas << endl;
+    cout << "-----------------------\n";
+}
+
+// 2. Processa a tentativa do jogador (uma letra)
+bool tentar_letra(char tentativa, string& palavra_oculta, string& palavra_adivinhada, int& erros) {
+    bool acertou = false;
+    bool letra_ja_tentada = false;
+
+    // Converte a tentativa para maiúscula (para padronização)
+    tentativa = toupper(tentativa);
+
+    // Verifica se a letra já foi tentada
+    // (A variável 'letras_tentadas' é controlada na função 'main')
+
+    // Verifica se a letra está na palavra
+    for (size_t i = 0; i < palavra_oculta.length(); ++i) {
+        if (toupper(palavra_oculta[i]) == tentativa) {
+            // Se a letra já foi revelada, não conta como acerto novo.
+            if (palavra_adivinhada[i] != '_') {
+                letra_ja_tentada = true;
+                break; 
+            }
+            palavra_adivinhada[i] = tentativa;
+            acertou = true;
+        }
+    }
+
+    if (!acertou && !letra_ja_tentada) {
+        erros++;
+        return false; // Erro!
+    } else if (letra_ja_tentada) {
+        cout << "Essa letra já foi revelada ou você já a tentou.\n";
+        return true; // Não é erro, mas também não é um novo acerto.
+    }
+    
+    return true; // Acertou!
+}
+
+
+// --- Função Principal do Jogo ---
+
+int main() {
+    // Inicializa a semente para a função rand()
+    srand(time(0)); 
+
+    // Lista de palavras (em maiúsculas para facilitar a comparação)
+    vector<string> palavras = {"PROGRAMACAO", "COMPUTADOR", "DESENVOLVEDOR", "ALGORITMO", "LINGUAGEM", "SOFTWARE", "BINARIO"};
+    
+    // 1. Escolhe uma palavra aleatória
+    int indice_aleatorio = rand() % palavras.size();
+    string palavra_secreta = palavras[indice_aleatorio];
+
+    // 2. Inicializa o estado do jogo
+    int max_erros = 6;
+    int erros_atuais = 0;
+    string adivinhada(palavra_secreta.length(), '_'); // String com o tamanho da palavra, preenchida com '_'
+    string letras_tentadas = "";
+
+    cout << "======================================\n";
+    cout << "      Bem-vindo ao Jogo da Forca!     \n";
+    cout << "======================================\n";
+    
+    // Loop principal do jogo
+    while (erros_atuais < max_erros && adivinhada != palavra_secreta) {
+        desenha_forca(erros_atuais, adivinhada, letras_tentadas);
+
+        // 3. Pede a tentativa ao jogador
+        char tentativa;
+        cout << "Digite uma letra: ";
+        cin >> tentativa;
+        tentativa = toupper(tentativa);
+
+        // 4. Verifica se a letra já foi tentada
+        if (letras_tentadas.find(tentativa) != string::npos) {
+            cout << "Você já tentou a letra '" << tentativa << "'. Tente outra!\n";
+            continue; // Volta ao início do loop
+        }
+
+        // 5. Adiciona a letra às tentativas
+        letras_tentadas += tentativa;
+        
+        // 6. Processa a tentativa e atualiza os erros
+        bool acertou = tentar_letra(tentativa, palavra_secreta, adivinhada, erros_atuais);
+        
+        if (acertou) {
+            cout << "🎉 Parabéns! Você acertou uma letra.\n";
+        } else {
+             // A função tentar_letra já incrementa erros_atuais
+            cout << "❌ Erro! A letra não está na palavra.\n";
+        }
+    }
+
+    // --- Fim do Jogo ---
+    desenha_forca(erros_atuais, adivinhada, letras_tentadas);
+    cout << "======================================\n";
+
+    if (adivinhada == palavra_secreta) {
+        cout << "🥳 VITÓRIA! Você adivinhou a palavra: " << palavra_secreta << endl;
+    } else {
+        cout << "😭 FIM DE JOGO! Você foi enforcado.\n";
+        cout << "A palavra secreta era: " << palavra_secreta << endl;
+    }
+
+    cout << "======================================\n";
+
+    return 0;
+}
+
+
+    // Lista de palavras (em maiúsculas para facilitar a comparação)
+    vector<string> palavras = {"PROGRAMACAO", "COMPUTADOR", "DESENVOLVEDOR", "ALGORITMO", "LINGUAGEM", "SOFTWARE", "BINARIO"};
+    
+    // 1. Escolhe uma palavra aleatória
+    int indice_aleatorio = rand() % palavras.size();
+    string palavra_secreta = palavras[indice_aleatorio];
+
+    // 2. Inicializa o estado do jogo
+    int max_erros = 6;
+    int erros_atuais = 0;
+    string adivinhada(palavra_secreta.length(), '_'); // String com o tamanho da palavra, preenchida com '_'
+    string letras_tentadas = "";
+
+    cout << "======================================\n";
+    cout << "      Bem-vindo ao Jogo da Forca!     \n";
+    cout << "======================================\n";
+    
+    // Loop principal do jogo
+    while (erros_atuais < max_erros && adivinhada != palavra_secreta) {
+        desenha_forca(erros_atuais, adivinhada, letras_tentadas);
+
+        // 3. Pede a tentativa ao jogador
+        char tentativa;
+        cout << "Digite uma letra: ";
+        cin >> tentativa;
+        tentativa = toupper(tentativa);
+
+        // 4. Verifica se a letra já foi tentada
+        if (letras_tentadas.find(tentativa) != string::npos) {
+            cout << "Você já tentou a letra '" << tentativa << "'. Tente outra!\n";
+            continue; // Volta ao início do loop
+        }
+
+        // 5. Adiciona a letra às tentativas
+        letras_tentadas += tentativa;
+        
+        // 6. Processa a tentativa e atualiza os erros
+        bool acertou = tentar_letra(tentativa, palavra_secreta, adivinhada, erros_atuais);
+        
+        if (acertou) {
+            cout << "🎉 Parabéns! Você acertou uma letra.\n";
+        } else {
+             // A função tentar_letra já incrementa erros_atuais
+            cout << "❌ Erro! A letra não está na palavra.\n";
+        }
+    }
+
+    // --- Fim do Jogo ---
+    desenha_forca(erros_atuais, adivinhada, letras_tentadas);
+    cout << "======================================\n";
+
+    if (adivinhada == palavra_secreta) {
+        cout << "🥳 VITÓRIA! Você adivinhou a palavra: " << palavra_secreta << endl;
+    } else {
+        cout << "😭 FIM DE JOGO! Você foi enforcado.\n";
+        cout << "A palavra secreta era: " << palavra_secreta << endl;
+    }
+
+    cout << "======================================\n";
+
+    return 0;
+}
